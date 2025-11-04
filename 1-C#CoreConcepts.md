@@ -26,6 +26,75 @@ It’s popular because it’s easy to learn, supports modern features, and provi
 Console.WriteLine("Hello, C#!");
 
 ```
+
+🔑 Key Takeaway
+
+C# is Microsoft’s flagship language for modern, secure, cross-platform development.
+
+2️⃣ Structure of a C# Program
+
+💡 Concept:
+A C# program is structured into namespaces, classes, and methods. The entry point is the Main() method.
+
+🧠 Main Question: What are namespaces, classes, and methods?
+
+✅ Answer:
+
+Namespace: Groups related classes together.
+
+Class: Blueprint that defines properties and methods.
+
+Method: A block of code that performs a specific task.
+
+🔁 Cross Questions
+
+Q1: Why do we use Main() method?
+👉 It’s the entry point where execution starts.
+
+Q2: Can a C# program have multiple Main() methods?
+👉 Yes, but only one will act as the entry point — defined during compilation.
+
+⚙️ Example
 ---
+# 💡 C# Basics Visual Q&A (Part 1 – Complete Edition)
+
+This section covers **fundamental topics of C#** with simple explanations, examples, and cross questions — perfect for interview prep and concept clarity.
+
+---
+
+## 2️⃣ Structure of a C# Program
+
+### 🧩 Concept
+Every C# program has a structure that includes **namespaces, classes, and methods**.  
+It defines how your code is organized and executed.
+
+### 💬 Main Question
+**Q:** What are namespaces, classes, and methods?
+
+**A:**  
+- **Namespace**: Logical container to organize code and avoid name conflicts.  
+- **Class**: Blueprint for objects that holds data (fields) and logic (methods).  
+- **Method**: A block of code that performs a specific task.
+
+### 🔍 Cross Questions
+- Why do we use `Main()` method?  
+  ➤ It’s the entry point where program execution starts.  
+- Can a C# program have multiple `Main()` methods?  
+  ➤ Yes, but only one can be the entry point — defined in project settings.
+
+### 🧠 Example
+```csharp
+using System;
+
+namespace DemoApp
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Hello, Ankita!");
+        }
+    }
+}
 
 
