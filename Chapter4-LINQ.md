@@ -336,3 +336,182 @@ Yes, using `System.Linq.Dynamic` or `Expression Trees` to build queries at runti
 | Type-safe | Not type-safe |
 | Checked at compile time | Checked at runtime |
 | Works with objects | Works with tables |
+
+
+
+# 🧠 C# LINQ (Language Integrated Query) – Cheat Sheet
+
+---
+
+## 🔹 What is LINQ?
+
+**LINQ (Language Integrated Query)** lets you write SQL-like queries directly inside C#
+to work with data from **collections, databases, XML, JSON, or objects**.
+
+✅ **Key Benefit:**
+Write *declarative* (what you want) instead of *imperative* (how to do it) code.
+
+---
+
+## 🔹 Basic Syntax
+
+```csharp
+// Query Syntax (like SQL)
+var result = from n in numbers
+             where n > 10
+             orderby n
+             select n;
+
+// Method Syntax (Lambda style)
+var result = numbers.Where(n => n > 10).OrderBy(n => n);
+```
+
+---
+
+## 🔹 Common LINQ Methods
+
+| Category           | Method                                                                   | Example                                                              | Description                   |
+| ------------------ | ------------------------------------------------------------------------ | -------------------------------------------------------------------- | ----------------------------- |
+| **Filtering**      | `Where()`                                                                | `nums.Where(x => x > 5)`                                             | Filters based on a condition  |
+| **Projection**     | `Select()`                                                               | `nums.Select(x => x * 2)`                                            | Transforms each element       |
+| **Sorting**        | `OrderBy()`, `OrderByDescending()`                                       | `students.OrderBy(s => s.Name)`                                      | Sorts ascending/descending    |
+| **Grouping**       | `GroupBy()`                                                              | `students.GroupBy(s => s.Branch)`                                    | Groups by a key               |
+| **Joining**        | `Join()`                                                                 | `students.Join(depts, s => s.DeptId, d => d.Id, (s,d) => new {...})` | Joins two collections         |
+| **Aggregation**    | `Count()`, `Sum()`, `Average()`, `Min()`, `Max()`                        | `nums.Sum()`                                                         | Performs math calculations    |
+| **Element**        | `First()`, `FirstOrDefault()`, `Single()`, `SingleOrDefault()`, `Last()` | `nums.FirstOrDefault()`                                              | Gets specific element(s)      |
+| **Quantifiers**    | `Any()`, `All()`, `Contains()`                                           | `nums.Any(x => x > 10)`                                              | Checks conditions on sequence |
+| **Set Operations** | `Distinct()`, `Union()`, `Intersect()`, `Except()`                       | `list1.Intersect(list2)`                                             | Compares or merges sequences  |
+| **Partitioning**   | `Take()`, `Skip()`                                                       | `nums.Take(3)`                                                       | Takes or skips items          |
+| **Conversion**     | `ToList()`, `ToArray()`, `ToDictionary()`                                | `nums.ToList()`                                                      | Converts result type          |
+| **Generation**     | `Range()`, `Repeat()`, `Empty()`                                         | `Enumerable.Range(1,5)`                                              | Generates collections         |
+
+---
+
+## 🔹 Simple Example
+
+```csharp
+var numbers = new List<int> { 1, 5, 10, 15, 20 };
+
+// Even numbers greater than 5
+var result = numbers
+    .Where(n => n > 5 && n % 2 == 0)
+    .Select(n => n);
+
+foreach (var n in result)
+    Console.WriteLine(n);
+```
+
+**Output**
+
+```
+10
+20
+```
+
+---
+
+## 🔹 LINQ with Custom Class
+
+```csharp
+var students = new List<Student>
+{
+    new Student { Id = 1, Name = "Ankita", Marks = 85 },
+    new Student { Id = 2, Name = "Ravi", Marks = 45 },
+    new Student { Id = 3, Name = "Sneha", Marks = 90 }
+};
+
+// Get students with Marks > 50
+var toppers = students
+    .Where(s => s.Marks > 50)
+    .OrderByDescending(s => s.Marks)
+    .Select(s => new { s.Name, s.Marks });
+
+foreach (var s in toppers)
+    Console.WriteLine($"{s.Name} - {s.Marks}");
+```
+
+---
+
+## 🔹 Query Syntax Example
+
+```csharp
+var highScorers = from s in students
+                  where s.Marks > 50
+                  orderby s.Marks descending
+                  select new { s.Name, s.Marks };
+```
+
+---
+
+## 🔹 Deferred vs Immediate Execution
+
+| Type                    | Meaning                  | Example                                       |
+| ----------------------- | ------------------------ | --------------------------------------------- |
+| **Deferred Execution**  | Query runs when iterated | `var q = nums.Where(x => x > 5);`             |
+| **Immediate Execution** | Query runs immediately   | `var list = nums.Where(x => x > 5).ToList();` |
+
+---
+
+## 🔹 LINQ with Anonymous Types
+
+```csharp
+var results = students
+    .Select(s => new { FullName = s.Name, Grade = s.Marks > 60 ? "Pass" : "Fail" });
+```
+
+---
+
+## 🔹 LINQ Join Example
+
+```csharp
+var result = from s in students
+             join d in departments on s.DeptId equals d.Id
+             select new { s.Name, d.DeptName };
+```
+
+---
+
+## 🔹 LINQ Grouping Example
+
+```csharp
+var grouped = students.GroupBy(s => s.DeptId);
+
+foreach (var group in grouped)
+{
+    Console.WriteLine($"Dept: {group.Key}");
+    foreach (var s in group)
+        Console.WriteLine($"  {s.Name}");
+}
+```
+
+---
+
+## 🔹 LINQ Aggregation Example
+
+```csharp
+var avgMarks = students.Average(s => s.Marks);
+Console.WriteLine($"Average Marks: {avgMarks}");
+```
+
+---
+
+## 🔹 LINQ Variants
+
+| Type                      | Description                   | Example                                                       |
+| ------------------------- | ----------------------------- | ------------------------------------------------------------- |
+| **LINQ to Objects**       | Queries in-memory collections | `nums.Where(x => x > 5)`                                      |
+| **LINQ to SQL / EF Core** | Queries databases             | `context.Users.Where(u => u.Active)`                          |
+| **LINQ to XML**           | Queries XML documents         | `from x in xml.Descendants("Book") select x.Element("Title")` |
+
+---
+
+## 💡 Key Takeaways
+
+✅ Unified query syntax across data sources
+✅ Supports filtering, sorting, grouping, joining, and projection
+✅ Use **Lambda (Method Syntax)** for flexibility
+✅ Use **Query Syntax** for readability
+✅ Remember **Deferred vs Immediate Execution**
+✅ Eliminates loops and improves readability
+
+---
