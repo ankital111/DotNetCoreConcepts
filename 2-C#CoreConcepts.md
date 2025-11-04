@@ -211,3 +211,273 @@ A `Thread` is a physical thread managed by OS. A `Task` is a higher-level abstra
 
 ---
 
+# 🧠 C# Advanced Q&A (Part 2 — With Concepts, Examples & Cross Questions)
+
+---
+
+## 🟩 9. Dependency Injection (DI)
+
+**Concept Explanation:**  
+Dependency Injection is a design pattern used to make classes loosely coupled by providing their dependencies from outside rather than creating them inside. It improves testability and flexibility.
+
+**Q: What is Dependency Injection (DI) and why is it used?**  
+It allows objects to receive their dependencies from external sources (like configuration or container) instead of creating them directly.
+
+**Example:**
+```csharp
+public interface IMessageService {
+    void Send(string message);
+}
+public class EmailService : IMessageService {
+    public void Send(string message) => Console.WriteLine($"Email: {message}");
+}
+
+public class Notification {
+    private readonly IMessageService _service;
+    public Notification(IMessageService service) => _service = service;
+    public void Notify() => _service.Send("Hello DI!");
+}
+```
+**Real-life Example:** In ASP.NET Core, DI is used to inject services (e.g., logging, configuration) automatically.
+
+**Cross Questions:**  
+- **Q:** What are DI lifetimes in .NET Core?  
+  **A:** `Singleton`, `Scoped`, and `Transient`.  
+- **Q:** Why is DI better than `new`?  
+  **A:** It removes tight coupling and makes unit testing easier.
+
+**Key Takeaway:** DI = flexible, testable, and maintainable code.
+
+---
+
+## 🟩 10. Garbage Collection (GC)
+
+**Concept Explanation:**  
+Garbage Collector automatically manages memory in .NET. It frees objects in heap that are no longer in use, preventing memory leaks.
+
+**Q: How does Garbage Collection work?**  
+GC tracks objects on heap and removes those with no active references.
+
+**Example:**
+```csharp
+Person p = new Person();
+p = null;       // object becomes eligible for GC
+GC.Collect();   // forces GC manually (not recommended)
+```
+
+**Cross Questions:**  
+- **Q:** What are GC generations?  
+  **A:** 0 (short-lived), 1 (medium), 2 (long-lived) — GC checks young objects more often.  
+- **Q:** When should you call `GC.Collect()`?  
+  **A:** Only in rare cases, like after large memory releases.
+
+**Key Takeaway:** GC optimizes memory automatically — avoid manual calls.
+
+---
+
+## 🟩 11. Memory Management
+
+**Concept Explanation:**  
+Memory management in .NET includes allocation, garbage collection, and cleanup using `IDisposable` and `using`.
+
+**Q: What are weak references?**  
+A weak reference lets you reference an object without preventing GC from collecting it.
+
+**Example:**
+```csharp
+WeakReference objRef = new WeakReference(new Person());
+if (objRef.IsAlive)
+    Console.WriteLine("Object still exists");
+```
+
+**Cross Questions:**  
+- **Q:** How do `IDisposable` and `using` work?  
+  **A:** They release unmanaged resources like file handles or database connections.  
+- **Q:** What is a memory leak?  
+  **A:** When objects are unintentionally kept alive, preventing GC from reclaiming memory.
+
+**Key Takeaway:** Always dispose unmanaged resources properly.
+
+---
+
+## 🟩 12. Records & Structs (C# 9+)
+
+**Concept Explanation:**  
+Records are immutable reference types introduced in C# 9 for data modeling. Structs are value types used for small, lightweight data.
+
+**Q: What are record types?**  
+They are special classes optimized for storing data with built-in equality and immutability.
+
+**Example:**
+```csharp
+public record Person(string Name, int Age);
+var p1 = new Person("Ankita", 32);
+```
+
+**Cross Questions:**  
+- **Q:** How do records differ from classes?  
+  **A:** Records use value-based equality, while classes use reference equality.  
+- **Q:** Are records reference or value types?  
+  **A:** Reference types (unless defined as `record struct`).
+
+**Key Takeaway:** Records simplify immutable data handling.
+
+---
+
+## 🟩 13. Pattern Matching (C# 9+)
+
+**Concept Explanation:**  
+Pattern matching allows checking types and conditions in cleaner, expressive ways using `is`, `switch`, and `when` patterns.
+
+**Q: What is pattern matching in C#?**  
+A feature that simplifies conditional logic based on type or property values.
+
+**Example:**
+```csharp
+object obj = 5;
+if (obj is int number && number > 0)
+    Console.WriteLine("Positive integer");
+```
+
+**Cross Questions:**  
+- **Q:** Example with switch expression?  
+  **A:**  
+  ```csharp
+  string result = obj switch {
+      int n when n > 0 => "Positive",
+      int n when n < 0 => "Negative",
+      _ => "Zero or not int"
+  };
+  ```
+
+**Key Takeaway:** Pattern matching = cleaner conditional logic.
+
+---
+
+## 🟩 14. Tuples
+
+**Concept Explanation:**  
+Tuples group multiple values into a single structure without creating a class.
+
+**Q: What is a tuple?**  
+A data structure that holds multiple values of possibly different types.
+
+**Example:**
+```csharp
+(string name, int age) person = ("Ankita", 32);
+Console.WriteLine(person.name);
+```
+
+**Cross Questions:**  
+- **Q:** Difference between `Tuple<T>` and ValueTuple `(T1, T2)`?  
+  **A:** `ValueTuple` is faster and allows naming elements.  
+- **Q:** Can we return tuples from methods?  
+  **A:** Yes, very useful for multiple return values.
+
+**Key Takeaway:** Tuples simplify returning multiple results.
+
+---
+
+## 🟩 15. Reflection
+
+**Concept Explanation:**  
+Reflection lets you inspect and interact with metadata (like classes, methods, and properties) at runtime.
+
+**Q: What is reflection in C#?**  
+A mechanism to examine or modify program structure at runtime.
+
+**Example:**
+```csharp
+Type t = typeof(string);
+foreach (var m in t.GetMethods())
+    Console.WriteLine(m.Name);
+```
+
+**Cross Questions:**  
+- **Q:** Can reflection access private members?  
+  **A:** Yes, using BindingFlags, but it should be avoided for security reasons.  
+- **Q:** Performance impact?  
+  **A:** Reflection is slower, use sparingly.
+
+**Key Takeaway:** Reflection = powerful but use carefully.
+
+---
+
+## 🟩 16. Attributes
+
+**Concept Explanation:**  
+Attributes add metadata to code elements (like methods, classes) to give the compiler or runtime extra information.
+
+**Q: What are attributes in C#?**  
+Decorators that provide additional information or behavior hints.
+
+**Example:**
+```csharp
+[Obsolete("Use NewMethod instead")]
+void OldMethod() { }
+```
+
+**Cross Questions:**  
+- **Q:** How to create a custom attribute?  
+  **A:**  
+  ```csharp
+  [AttributeUsage(AttributeTargets.Class)]
+  public class MyAttribute : Attribute { }
+  ```
+
+**Key Takeaway:** Attributes = metadata for classes/methods.
+
+---
+
+## 🟩 17. Generics (Advanced)
+
+**Concept Explanation:**  
+Generics make code reusable by allowing methods and classes to operate with any data type safely.
+
+**Q: What are generic constraints?**  
+They restrict the types that can be used as generic arguments.
+
+**Example:**
+```csharp
+public class Repo<T> where T : class {
+    public void Add(T item) => Console.WriteLine(item);
+}
+```
+
+**Cross Questions:**  
+- **Q:** What is covariance and contravariance?  
+  **A:** Covariance allows a derived-to-base conversion; contravariance allows base-to-derived in generics.  
+- **Q:** Benefit of generics?  
+  **A:** Type safety and no boxing.
+
+**Key Takeaway:** Generics = reusable and type-safe code.
+
+---
+
+## 🟩 18. Unsafe Code
+
+**Concept Explanation:**  
+Unsafe code allows pointer operations for performance-critical tasks, but should be avoided unless absolutely necessary.
+
+**Q: What is unsafe code in C#?**  
+Code that uses pointers and bypasses CLR safety checks.
+
+**Example:**
+```csharp
+unsafe {
+    int a = 10;
+    int* p = &a;
+    Console.WriteLine(*p);
+}
+```
+
+**Cross Questions:**  
+- **Q:** When should it be used?  
+  **A:** Only for low-level memory access, like interop or performance optimization.  
+- **Q:** Is unsafe code recommended in production?  
+  **A:** No, it can cause memory corruption.
+
+**Key Takeaway:** Unsafe = powerful but risky. Use rarely.
+
+---
+
