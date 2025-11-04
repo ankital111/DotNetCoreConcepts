@@ -1,242 +1,689 @@
-# C# Advanced Questions and Answers
 
-| **Topic** | **Main Question & Answer** | **Cross Questions & Answers** |
-|------------|-----------------------------|--------------------------------|
-
-### **1. Value Types vs Reference Types**
-**Q:** What’s the difference between stack and heap memory?  
-**A:** Stack stores value types and manages memory automatically in LIFO order. Heap stores reference types and is managed by the garbage collector.  
-
-**Q:** How are structs stored in memory?  
-**A:** Structs are value types, so they are stored on the stack by default, unless they are part of a class object.  
-
-**Q:** What happens when you pass a struct by reference?  
-**A:** Using `ref` or `out` passes a struct by reference, allowing modifications to affect the original instance.  
+# 🧠 C# Q&A (With Concept Explanations, Cross Questions & Examples)
 
 ---
 
-### **2. Boxing & Unboxing**
-**Q:** What is boxing and unboxing?  
-**A:** Boxing converts a value type to an `object` (heap allocation). Unboxing extracts the value type from the object.  
+## 🟩 1. Value Types vs Reference Types
 
-**Q:** Why is boxing costly?  
-**A:** Boxing involves allocating memory on the heap and copying the value, which is slower.  
+**Concept Explanation:**  
+In C#, *value types* store the actual data (like `int`, `bool`, `struct`) directly on the **stack**, while *reference types* (like `class`, `string`, `object`) store a reference (address) to data on the **heap**. Stack is faster but temporary, heap is managed by Garbage Collector.
 
-**Q:** How to avoid unnecessary boxing?  
-**A:** Use generics instead of `object` to store value types efficiently.  
+**Q: What’s the difference between stack and heap memory?**  
+- **Stack:** Stores value types and method calls. Automatically cleared after method ends.  
+- **Heap:** Stores reference types. Cleaned by Garbage Collector when not used.
 
----
-
-### **3. ref, out, in Parameters**
-**Q:** What is the difference between `ref`, `out`, and `in`?  
-**A:**  
-- `ref`: Must be initialized before passing, allows reading/writing.  
-- `out`: Must be assigned inside the method, used for output.  
-- `in`: Passed by reference but read-only.  
-
-**Q:** Can async methods use ref parameters?  
-**A:** No, async methods cannot have `ref` or `out` parameters due to compiler-generated state machines.  
-
----
-
-### **4. Nullable Types**
-**Q:** How do nullable types work?  
-**A:** Nullable types (`int?`) allow value types to represent null, wrapping them in `Nullable<T>`.  
-
-**Q:** Difference between `Nullable<T>` and `T?` syntax?  
-**A:** They are equivalent. `T?` is shorthand for `Nullable<T>`.  
-
-**Q:** How to check for null?  
-**A:** Use `HasValue` or null-coalescing operator `??`.  
-
----
-
-### **5. Extension Methods**
-**Q:** What are extension methods?  
-**A:** Static methods that add functionality to existing types without modifying them.  
-
-**Q:** Can we override them?  
-**A:** No, they are static and resolved at compile-time, not runtime.  
-
-**Q:** How does compiler resolve them?  
-**A:** It searches for static classes with `this` keyword parameter in the same or imported namespace.  
-
----
-
-### **6. Dynamic Keyword**
-**Q:** What is `dynamic` type?  
-**A:** `dynamic` bypasses compile-time type checking; binding occurs at runtime.  
-
-**Q:** Difference between `dynamic` and `object`?  
-**A:** Both can hold any type, but `dynamic` skips compile-time checks. `object` requires explicit casting.  
-
-**Q:** When to avoid dynamic?  
-**A:** Avoid when type safety and performance are priorities.  
-
----
-
-### **7. Async & Await**
-**Q:** How does async/await work internally?  
-**A:** Compiler transforms async methods into state machines that execute asynchronously using `Task` objects.  
-
-**Q:** What happens if you don’t use `await`?  
-**A:** The task runs but exceptions may be unhandled; method continues without waiting.  
-
-**Q:** Can we have multiple awaits?  
-**A:** Yes, multiple awaits run sequentially unless tasks are started before awaiting (for concurrency).  
-
----
-
-### **8. Tasks & Threads**
-**Q:** Difference between `Thread`, `Task`, and `async`?  
-**A:**  
-- `Thread`: Low-level OS thread.  
-- `Task`: Higher abstraction representing asynchronous work.  
-- `async`: Keyword simplifying asynchronous programming with tasks.  
-
-**Q:** What is the thread pool?  
-**A:** A pool of pre-created threads reused for tasks to improve performance.  
-
-**Q:** How does `Task.Run()` work?  
-**A:** It queues work to the thread pool for execution.  
-
----
-
-### **9. Dependency Injection**
-**Q:** What is DI and why is it used?  
-**A:** DI provides dependencies externally rather than creating them inside classes, improving modularity and testability.  
-
-**Q:** What are lifetimes in .NET Core DI?  
-**A:**  
-- `Singleton`: One instance for entire app.  
-- `Scoped`: One per request.  
-- `Transient`: New instance each time.  
-
-**Q:** What’s the difference between DI and IoC?  
-**A:** IoC is a principle; DI is one way to implement it.  
-
----
-
-### **10. Garbage Collection (GC)**
-**Q:** How does GC work?  
-**A:** GC reclaims memory of unused objects on the heap automatically.  
-
-**Q:** What are generations in GC?  
-**A:**  
-- Gen 0: Short-lived objects.  
-- Gen 1: Medium-lived.  
-- Gen 2: Long-lived.  
-
-**Q:** When to use `GC.Collect()`?  
-**A:** Rarely; only when you must free large unused memory explicitly.  
-
----
-
-### **11. Memory Management**
-**Q:** What are weak references?  
-**A:** References that don’t prevent GC from collecting the object.  
-
-**Q:** How do `IDisposable` and `using` work?  
-**A:** `IDisposable.Dispose()` releases unmanaged resources. `using` ensures Dispose is called automatically.  
-
----
-
-### **12. Records & Structs (C# 9+)**
-**Q:** What are record types?  
-**A:** Immutable reference types designed for data models with built-in equality.  
-
-**Q:** How do records differ from classes?  
-**A:** Records use value-based equality; classes use reference equality.  
-
-**Q:** Are records reference or value types?  
-**A:** Records are reference types by default, but can be defined as `record struct`.  
-
----
-
-### **13. Pattern Matching (C# 9+)**
-**Q:** What is pattern matching?  
-**A:** Pattern matching allows concise checks and destructuring of objects based on types and values.  
-
-**Q:** Example using switch expressions:  
+**Example:**
 ```csharp
-string GetType(object obj) => obj switch
-{
-    int i => "Integer",
-    string s => "String",
-    null => "Null",
-    _ => "Unknown"
-};
+int a = 10;        // stored on stack
+Person p = new();  // reference stored on stack, object on heap
 ```
 
-**Q:** What are type, relational, and property patterns?  
-**A:** Patterns that match by type, range, or property values.  
+**Cross Questions:**  
+- **Q:** How are structs stored in memory?  
+  **A:** Structs are value types, so they stay on stack (unless part of a class).  
+- **Q:** What happens when you pass a struct by reference?  
+  **A:** You modify the original struct instead of copying it.
+
+**Key Takeaway:** Stack = fast, local. Heap = global, managed.
 
 ---
 
-### **14. Tuples**
-**Q:** What is a tuple?  
-**A:** A lightweight data structure to group multiple values.  
+## 🟩 2. Boxing & Unboxing
 
-**Q:** Difference between `Tuple<T>` and value tuple `(T1, T2)`?  
-**A:** Value tuples are faster, support named fields, and are mutable.  
+**Concept Explanation:**  
+Boxing and Unboxing help convert value types to objects and back. It’s useful when dealing with non-generic collections or APIs expecting `object`, but it adds performance overhead.
 
-**Q:** Can tuples be returned from methods?  
-**A:** Yes, ideal for returning multiple values without creating a class.  
+**Q: What is boxing and unboxing?**  
+- **Boxing:** Converts value type → object.  
+- **Unboxing:** Extracts object → value type.
 
----
-
-### **15. Reflection**
-**Q:** What is reflection?  
-**A:** Allows runtime inspection and modification of types, properties, and methods.  
-
-**Q:** Can reflection modify private members?  
-**A:** Yes, using `BindingFlags.NonPublic`, though it’s discouraged.  
-
-**Q:** Performance impact?  
-**A:** Reflection is slower; avoid in performance-critical code.  
-
----
-
-### **16. Attributes**
-**Q:** What are attributes in C#?  
-**A:** Metadata attached to code elements used for reflection or custom logic.  
-
-**Q:** How to create a custom attribute?  
-**A:** Derive from `System.Attribute`. Example:  
+**Example:**
 ```csharp
-[AttributeUsage(AttributeTargets.Class)]
-public class InfoAttribute : Attribute
-{
-    public string Description { get; }
-    public InfoAttribute(string desc) => Description = desc;
+int x = 10;
+object obj = x;       // Boxing
+int y = (int)obj;     // Unboxing
+```
+
+**Cross Questions:**  
+- **Q:** Why is boxing costly?  
+  **A:** It requires new memory allocation on the heap.  
+- **Q:** How to avoid boxing?  
+  **A:** Use generics like `List<int>` instead of `ArrayList`.
+
+**Key Takeaway:** Avoid boxing in performance-critical code.
+
+---
+
+## 🟩 3. ref, out, and in Parameters
+
+**Concept Explanation:**  
+These keywords help pass variables differently into methods:  
+- `ref`: pass by reference (value can change).  
+- `out`: for output only (must assign inside method).  
+- `in`: pass by reference but read-only.
+
+**Q: What’s the difference between `ref`, `out`, and `in`?**  
+
+| Keyword | Purpose | Must Initialize? | Can Modify? |
+|----------|----------|------------------|--------------|
+| `ref`    | Pass existing value by reference | ✅ Yes | ✅ Yes |
+| `out`    | Used for returning multiple values | ❌ No | ✅ Yes |
+| `in`     | Pass reference as read-only | ✅ Yes | ❌ No |
+
+**Example:**
+```csharp
+void Demo(ref int a, out int b, in int c) {
+    a += 5;       // ok
+    b = 20;       // required
+    // c = 30;    // not allowed
 }
 ```
 
+**Cross Question:**  
+- **Q:** Can async methods use ref parameters?  
+  **A:** No, because async methods work as state machines, and ref variables can change unexpectedly.
+
+**Key Takeaway:** Use `ref` for modify, `out` for return, `in` for read-only.
+
 ---
 
-### **17. Generics (Advanced)**
-**Q:** What are generic constraints?  
-**A:** Rules applied to type parameters using `where` keyword (e.g., `where T : class`).  
+## 🟩 4. Nullable Types
 
-**Q:** What’s covariance and contravariance?  
-**A:**  
-- **Covariance (`out`)**: Allows derived-to-base assignment.  
-- **Contravariance (`in`)**: Allows base-to-derived assignment.  
+**Concept Explanation:**  
+By default, value types (like int, bool) cannot store `null`. Nullable types (`int?`, `bool?`) allow assigning `null` to value types safely.
 
-**Q:** Example:  
+**Q: How do nullable types work?**  
+They wrap the value inside a `Nullable<T>` structure that can store either a value or `null`.
+
+**Example:**
 ```csharp
-IEnumerable<string> strs = new List<string>();
-IEnumerable<object> objs = strs; // Covariant
+int? age = null;
+if (age.HasValue)
+    Console.WriteLine(age.Value);
 ```
 
+**Cross Questions:**  
+- **Q:** Difference between `Nullable<T>` and `T?`?  
+  **A:** `T?` is a short form of `Nullable<T>`.  
+- **Q:** How to provide default for null?  
+  **A:** `int result = age ?? 18;`
+
+**Key Takeaway:** Use `?` and `??` to handle null safely.
+
 ---
 
-### **18. Unsafe Code**
-**Q:** What is unsafe code?  
-**A:** Code that uses pointers via `unsafe` keyword. Requires `/unsafe` compiler flag.  
+## 🟩 5. Extension Methods
 
-**Q:** When should it be used?  
-**A:** Only for performance-critical or interop scenarios.  
+**Concept Explanation:**  
+Extension methods let you add new methods to existing classes without changing their original code. They are defined as static methods but called as instance methods.
 
-**Q:** Is it recommended in production?  
-**A:** No, as it bypasses CLR safety checks.
+**Q: What are extension methods?**  
+A static method that extends an existing type with new functionality.
+
+**Example:**
+```csharp
+public static class StringExtensions {
+    public static bool IsCapitalized(this string str)
+        => !string.IsNullOrEmpty(str) && char.IsUpper(str[0]);
+}
+```
+
+**Cross Questions:**  
+- **Q:** Can we override them?  
+  **A:** No, they cannot override existing methods.  
+- **Q:** How does compiler resolve them?  
+  **A:** Checks instance methods first, then extension ones.
+
+**Key Takeaway:** Great for adding reusable helper methods.
+
+---
+
+## 🟩 6. Dynamic Keyword
+
+**Concept Explanation:**  
+`dynamic` allows skipping compile-time type checking. The type is decided at runtime. It’s flexible but can cause runtime errors if misused.
+
+**Q: What is `dynamic` type?**  
+A type whose operations are checked at runtime.
+
+**Example:**
+```csharp
+dynamic d = "Hello";
+d = 123;   // works fine, runtime handled
+```
+
+**Cross Questions:**  
+- **Q:** Difference between `dynamic` and `object`?  
+  **A:** `dynamic` doesn’t need casting; `object` does.  
+- **Q:** When to avoid `dynamic`?  
+  **A:** Avoid when performance or type safety is important.
+
+**Key Takeaway:** Use for COM objects, reflection, or JSON APIs.
+
+---
+
+## 🟩 7. Async & Await
+
+**Concept Explanation:**  
+`async` and `await` make asynchronous code easier to read and write. Instead of blocking threads, async code waits for tasks to complete.
+
+**Q: How does async/await work internally?**  
+It creates a *state machine* that pauses execution at `await` and resumes when the awaited task completes.
+
+**Example:**
+```csharp
+async Task<int> GetDataAsync() {
+    await Task.Delay(1000);
+    return 10;
+}
+```
+
+**Cross Questions:**  
+- **Q:** What if you don’t use `await`?  
+  **A:** Code runs synchronously, task won’t complete automatically.  
+- **Q:** Can we use multiple awaits?  
+  **A:** Yes, sequentially or parallel with `Task.WhenAll()`.
+
+**Key Takeaway:** Async improves responsiveness, not execution speed.
+
+---
+
+## 🟩 8. Tasks & Threads
+
+**Concept Explanation:**  
+A `Thread` is a physical thread managed by OS. A `Task` is a higher-level abstraction that represents an operation that can run asynchronously using thread pool threads.
+
+**Q: What is the difference between `Thread`, `Task`, and `async`?**  
+
+| Concept | Description |
+|----------|-------------|
+| Thread | OS thread running code manually |
+| Task | Represents async operation handled by thread pool |
+| async/await | Syntax to simplify async programming |
+
+**Cross Questions:**  
+- **Q:** What is the Thread Pool?  
+  **A:** A collection of reusable threads managed by CLR.  
+- **Q:** How does `Task.Run()` work?  
+  **A:** It schedules work on a thread pool thread asynchronously.
+
+**Key Takeaway:** Prefer `Task` and `async` for scalability.
+
+---
+
+# 🧠 C# Advanced Q&A (Part 2 — With Concepts, Examples & Cross Questions)
+
+---
+
+## 🟩 9. Dependency Injection (DI)
+
+**Concept Explanation:**  
+Dependency Injection is a design pattern used to make classes loosely coupled by providing their dependencies from outside rather than creating them inside. It improves testability and flexibility.
+
+**Q: What is Dependency Injection (DI) and why is it used?**  
+It allows objects to receive their dependencies from external sources (like configuration or container) instead of creating them directly.
+
+**Example:**
+```csharp
+public interface IMessageService {
+    void Send(string message);
+}
+public class EmailService : IMessageService {
+    public void Send(string message) => Console.WriteLine($"Email: {message}");
+}
+
+public class Notification {
+    private readonly IMessageService _service;
+    public Notification(IMessageService service) => _service = service;
+    public void Notify() => _service.Send("Hello DI!");
+}
+```
+**Real-life Example:** In ASP.NET Core, DI is used to inject services (e.g., logging, configuration) automatically.
+
+**Cross Questions:**  
+- **Q:** What are DI lifetimes in .NET Core?  
+  **A:** `Singleton`, `Scoped`, and `Transient`.  
+- **Q:** Why is DI better than `new`?  
+  **A:** It removes tight coupling and makes unit testing easier.
+
+**Key Takeaway:** DI = flexible, testable, and maintainable code.
+
+---
+
+## 🟩 10. Garbage Collection (GC)
+
+**Concept Explanation:**  
+Garbage Collector automatically manages memory in .NET. It frees objects in heap that are no longer in use, preventing memory leaks.
+
+**Q: How does Garbage Collection work?**  
+GC tracks objects on heap and removes those with no active references.
+
+**Example:**
+```csharp
+Person p = new Person();
+p = null;       // object becomes eligible for GC
+GC.Collect();   // forces GC manually (not recommended)
+```
+
+**Cross Questions:**  
+- **Q:** What are GC generations?  
+  **A:** 0 (short-lived), 1 (medium), 2 (long-lived) — GC checks young objects more often.  
+- **Q:** When should you call `GC.Collect()`?  
+  **A:** Only in rare cases, like after large memory releases.
+
+**Key Takeaway:** GC optimizes memory automatically — avoid manual calls.
+
+---
+
+## 🟩 11. Memory Management
+
+**Concept Explanation:**  
+Memory management in .NET includes allocation, garbage collection, and cleanup using `IDisposable` and `using`.
+
+**Q: What are weak references?**  
+A weak reference lets you reference an object without preventing GC from collecting it.
+
+**Example:**
+```csharp
+WeakReference objRef = new WeakReference(new Person());
+if (objRef.IsAlive)
+    Console.WriteLine("Object still exists");
+```
+
+**Cross Questions:**  
+- **Q:** How do `IDisposable` and `using` work?  
+  **A:** They release unmanaged resources like file handles or database connections.  
+- **Q:** What is a memory leak?  
+  **A:** When objects are unintentionally kept alive, preventing GC from reclaiming memory.
+
+**Key Takeaway:** Always dispose unmanaged resources properly.
+
+---
+
+## 🟩 12. Records & Structs (C# 9+)
+
+**Concept Explanation:**  
+Records are immutable reference types introduced in C# 9 for data modeling. Structs are value types used for small, lightweight data.
+
+**Q: What are record types?**  
+They are special classes optimized for storing data with built-in equality and immutability.
+
+**Example:**
+```csharp
+public record Person(string Name, int Age);
+var p1 = new Person("Ankita", 32);
+```
+
+**Cross Questions:**  
+- **Q:** How do records differ from classes?  
+  **A:** Records use value-based equality, while classes use reference equality.  
+- **Q:** Are records reference or value types?  
+  **A:** Reference types (unless defined as `record struct`).
+
+**Key Takeaway:** Records simplify immutable data handling.
+
+---
+
+## 🟩 13. Pattern Matching (C# 9+)
+
+**Concept Explanation:**  
+Pattern matching allows checking types and conditions in cleaner, expressive ways using `is`, `switch`, and `when` patterns.
+
+**Q: What is pattern matching in C#?**  
+A feature that simplifies conditional logic based on type or property values.
+
+**Example:**
+```csharp
+object obj = 5;
+if (obj is int number && number > 0)
+    Console.WriteLine("Positive integer");
+```
+
+**Cross Questions:**  
+- **Q:** Example with switch expression?  
+  **A:**  
+  ```csharp
+  string result = obj switch {
+      int n when n > 0 => "Positive",
+      int n when n < 0 => "Negative",
+      _ => "Zero or not int"
+  };
+  ```
+
+**Key Takeaway:** Pattern matching = cleaner conditional logic.
+
+---
+
+## 🟩 14. Tuples
+
+**Concept Explanation:**  
+Tuples group multiple values into a single structure without creating a class.
+
+**Q: What is a tuple?**  
+A data structure that holds multiple values of possibly different types.
+
+**Example:**
+```csharp
+(string name, int age) person = ("Ankita", 32);
+Console.WriteLine(person.name);
+```
+
+**Cross Questions:**  
+- **Q:** Difference between `Tuple<T>` and ValueTuple `(T1, T2)`?  
+  **A:** `ValueTuple` is faster and allows naming elements.  
+- **Q:** Can we return tuples from methods?  
+  **A:** Yes, very useful for multiple return values.
+
+**Key Takeaway:** Tuples simplify returning multiple results.
+
+---
+
+## 🟩 15. Reflection
+
+**Concept Explanation:**  
+Reflection lets you inspect and interact with metadata (like classes, methods, and properties) at runtime.
+
+**Q: What is reflection in C#?**  
+A mechanism to examine or modify program structure at runtime.
+
+**Example:**
+```csharp
+Type t = typeof(string);
+foreach (var m in t.GetMethods())
+    Console.WriteLine(m.Name);
+```
+
+**Cross Questions:**  
+- **Q:** Can reflection access private members?  
+  **A:** Yes, using BindingFlags, but it should be avoided for security reasons.  
+- **Q:** Performance impact?  
+  **A:** Reflection is slower, use sparingly.
+
+**Key Takeaway:** Reflection = powerful but use carefully.
+
+---
+
+## 🟩 16. Attributes
+
+**Concept Explanation:**  
+Attributes add metadata to code elements (like methods, classes) to give the compiler or runtime extra information.
+
+**Q: What are attributes in C#?**  
+Decorators that provide additional information or behavior hints.
+
+**Example:**
+```csharp
+[Obsolete("Use NewMethod instead")]
+void OldMethod() { }
+```
+
+**Cross Questions:**  
+- **Q:** How to create a custom attribute?  
+  **A:**  
+  ```csharp
+  [AttributeUsage(AttributeTargets.Class)]
+  public class MyAttribute : Attribute { }
+  ```
+
+**Key Takeaway:** Attributes = metadata for classes/methods.
+
+---
+
+## 🟩 17. Generics (Advanced)
+
+**Concept Explanation:**  
+Generics make code reusable by allowing methods and classes to operate with any data type safely.
+
+**Q: What are generic constraints?**  
+They restrict the types that can be used as generic arguments.
+
+**Example:**
+```csharp
+public class Repo<T> where T : class {
+    public void Add(T item) => Console.WriteLine(item);
+}
+```
+
+**Cross Questions:**  
+- **Q:** What is covariance and contravariance?  
+  **A:** Covariance allows a derived-to-base conversion; contravariance allows base-to-derived in generics.  
+- **Q:** Benefit of generics?  
+  **A:** Type safety and no boxing.
+
+**Key Takeaway:** Generics = reusable and type-safe code.
+
+---
+
+## 🟩 18. Unsafe Code
+
+**Concept Explanation:**  
+Unsafe code allows pointer operations for performance-critical tasks, but should be avoided unless absolutely necessary.
+
+**Q: What is unsafe code in C#?**  
+Code that uses pointers and bypasses CLR safety checks.
+
+**Example:**
+```csharp
+unsafe {
+    int a = 10;
+    int* p = &a;
+    Console.WriteLine(*p);
+}
+```
+
+**Cross Questions:**  
+- **Q:** When should it be used?  
+  **A:** Only for low-level memory access, like interop or performance optimization.  
+- **Q:** Is unsafe code recommended in production?  
+  **A:** No, it can cause memory corruption.
+
+**Key Takeaway:** Unsafe = powerful but risky. Use rarely.
+
+---
+
+
+# ⚡ C# Quick Interview Cheat Sheet
+
+A super-short revision of key C# concepts, syntax, and differences.  
+Perfect to review before interviews or coding rounds. 🚀
+
+---
+
+## 🧩 Core Concepts
+
+| Concept | Quick Notes |
+|----------|--------------|
+| **C#** | Object-oriented, type-safe, cross-platform language by Microsoft. |
+| **.NET CLR** | Common Language Runtime – executes C# code and manages memory. |
+| **Namespace** | Logical grouping of classes. |
+| **Class** | Blueprint for objects. |
+| **Struct** | Value type, stored on stack, faster but limited. |
+| **Object** | Base type for all classes. |
+
+---
+
+## 🔢 Data Types
+
+| Category | Examples | Memory |
+|-----------|-----------|--------|
+| **Value Types** | int, bool, double, struct | Stack |
+| **Reference Types** | class, string, array, object | Heap |
+| **Nullable Types** | `int?`, `bool?` | Can store null |
+
+💡 *Value types copy data; reference types copy address.*
+
+---
+
+## 🔤 Variables & Constants
+
+| Keyword | Description |
+|----------|-------------|
+| `var` | Type inferred at compile time |
+| `dynamic` | Type checked at runtime |
+| `const` | Fixed compile-time value |
+| `readonly` | Assigned once at runtime |
+
+💡 *Use `const` for fixed values, `readonly` for runtime immutability.*
+
+---
+
+## ⚙️ Operators
+
+| Operator | Meaning |
+|-----------|----------|
+| `==` | Compares values or references |
+| `Equals()` | Compares content |
+| `??` | Returns default if null |
+| `?.` | Null-safe access |
+| `is / as` | Type checking & casting |
+| `?:` | Conditional (ternary) operator |
+
+---
+
+## 🔁 Control & Loops
+
+| Type | Description |
+|-------|--------------|
+| `if`, `else if`, `else` | Conditional flow |
+| `switch` | Multiple condition check |
+| `for` | Iteration with counter |
+| `foreach` | Iterates over collections |
+| `while`, `do-while` | Conditional repetition |
+| `break / continue` | Exit or skip iteration |
+
+---
+
+## 🧱 Arrays & Collections
+
+| Type | Description |
+|-------|--------------|
+| `Array` | Fixed size collection |
+| `List<T>` | Dynamic, generic list |
+| `Dictionary<TKey, TValue>` | Key-value pairs |
+| `HashSet<T>` | Unique elements only |
+
+---
+
+## ✨ Strings
+
+| Concept | Note |
+|----------|------|
+| Immutable | Once created, cannot change |
+| StringBuilder | Mutable, faster for edits |
+| Interning | Saves memory by reusing identical strings |
+
+---
+
+## 🔄 Type Casting
+
+| Type | Description |
+|-------|-------------|
+| Implicit | Safe automatic conversion (int → double) |
+| Explicit | Manual conversion (double → int) |
+| Boxing | Value → Object |
+| Unboxing | Object → Value |
+
+---
+
+## ⚡ OOP Pillars
+
+| Principle | Description |
+|------------|--------------|
+| **Encapsulation** | Hiding data via access modifiers |
+| **Abstraction** | Exposing only essential details |
+| **Inheritance** | Reuse code using `:` |
+| **Polymorphism** | Same method, different behavior (`override`, `virtual`) |
+
+---
+
+## 🧠 Advanced Concepts
+
+| Concept | Summary |
+|----------|----------|
+| **ref / out / in** | Parameter passing modifiers |
+| **Extension Methods** | Add methods to existing classes |
+| **Delegates** | Type-safe function pointer |
+| **Events** | Notification mechanism using delegates |
+| **LINQ** | Query collections easily |
+| **Async/Await** | Simplifies async programming |
+| **Task** | Represents async operation |
+| **Thread** | Unit of execution |
+| **DI (Dependency Injection)** | Loose coupling via inversion of control |
+| **GC (Garbage Collection)** | Automatic memory management |
+| **IDisposable / using** | Clean resource release |
+
+---
+
+## 🧩 C# 9+ Features
+
+| Feature | Description |
+|----------|-------------|
+| **Records** | Immutable reference types for data models |
+| **Pattern Matching** | Simplified conditional expressions |
+| **Init-only Setters** | Immutable properties |
+| **Top-level Statements** | No need for `Main()` boilerplate |
+| **Value Tuples** | `(int a, int b)` for lightweight data return |
+
+---
+
+## 🔍 Keywords to Remember
+
+| Keyword | Purpose |
+|----------|----------|
+| `sealed` | Prevent inheritance |
+| `abstract` | Define incomplete class |
+| `override` | Redefine base class method |
+| `virtual` | Allow overriding |
+| `static` | Belongs to class, not instance |
+| `readonly` | Assignable only once |
+| `partial` | Split class across files |
+
+---
+
+## 🧰 Common Exceptions
+
+| Exception | Description |
+|------------|--------------|
+| `NullReferenceException` | Accessing null object |
+| `InvalidCastException` | Wrong type conversion |
+| `IndexOutOfRangeException` | Invalid array index |
+| `DivideByZeroException` | Division by zero |
+| `FormatException` | Invalid data format |
+
+---
+
+## ⚙️ Memory & Performance
+
+| Concept | Description |
+|----------|-------------|
+| **Stack** | Stores value types, method calls |
+| **Heap** | Stores reference types |
+| **GC** | Frees unused objects automatically |
+| **Dispose()** | Manual cleanup for unmanaged resources |
+
+---
+
+## 🧾 Quick Syntax Reference
+
+```csharp
+// Class
+class Student {
+    public string Name { get; set; }
+    public void Display() => Console.WriteLine(Name);
+}
+
+// Struct
+struct Point { public int X, Y; }
+
+// Enum
+enum Role { Admin, User, Guest }
+
+// Interface
+interface IAnimal { void Speak(); }
+
+// Lambda
+Func<int, int> square = x => x * x;
+
+// Async Example
+async Task<int> FetchData() => await Task.FromResult(42);
+
