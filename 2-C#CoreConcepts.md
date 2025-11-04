@@ -481,3 +481,209 @@ unsafe {
 
 ---
 
+
+# ⚡ C# Quick Interview Cheat Sheet
+
+A super-short revision of key C# concepts, syntax, and differences.  
+Perfect to review before interviews or coding rounds. 🚀
+
+---
+
+## 🧩 Core Concepts
+
+| Concept | Quick Notes |
+|----------|--------------|
+| **C#** | Object-oriented, type-safe, cross-platform language by Microsoft. |
+| **.NET CLR** | Common Language Runtime – executes C# code and manages memory. |
+| **Namespace** | Logical grouping of classes. |
+| **Class** | Blueprint for objects. |
+| **Struct** | Value type, stored on stack, faster but limited. |
+| **Object** | Base type for all classes. |
+
+---
+
+## 🔢 Data Types
+
+| Category | Examples | Memory |
+|-----------|-----------|--------|
+| **Value Types** | int, bool, double, struct | Stack |
+| **Reference Types** | class, string, array, object | Heap |
+| **Nullable Types** | `int?`, `bool?` | Can store null |
+
+💡 *Value types copy data; reference types copy address.*
+
+---
+
+## 🔤 Variables & Constants
+
+| Keyword | Description |
+|----------|-------------|
+| `var` | Type inferred at compile time |
+| `dynamic` | Type checked at runtime |
+| `const` | Fixed compile-time value |
+| `readonly` | Assigned once at runtime |
+
+💡 *Use `const` for fixed values, `readonly` for runtime immutability.*
+
+---
+
+## ⚙️ Operators
+
+| Operator | Meaning |
+|-----------|----------|
+| `==` | Compares values or references |
+| `Equals()` | Compares content |
+| `??` | Returns default if null |
+| `?.` | Null-safe access |
+| `is / as` | Type checking & casting |
+| `?:` | Conditional (ternary) operator |
+
+---
+
+## 🔁 Control & Loops
+
+| Type | Description |
+|-------|--------------|
+| `if`, `else if`, `else` | Conditional flow |
+| `switch` | Multiple condition check |
+| `for` | Iteration with counter |
+| `foreach` | Iterates over collections |
+| `while`, `do-while` | Conditional repetition |
+| `break / continue` | Exit or skip iteration |
+
+---
+
+## 🧱 Arrays & Collections
+
+| Type | Description |
+|-------|--------------|
+| `Array` | Fixed size collection |
+| `List<T>` | Dynamic, generic list |
+| `Dictionary<TKey, TValue>` | Key-value pairs |
+| `HashSet<T>` | Unique elements only |
+
+---
+
+## ✨ Strings
+
+| Concept | Note |
+|----------|------|
+| Immutable | Once created, cannot change |
+| StringBuilder | Mutable, faster for edits |
+| Interning | Saves memory by reusing identical strings |
+
+---
+
+## 🔄 Type Casting
+
+| Type | Description |
+|-------|-------------|
+| Implicit | Safe automatic conversion (int → double) |
+| Explicit | Manual conversion (double → int) |
+| Boxing | Value → Object |
+| Unboxing | Object → Value |
+
+---
+
+## ⚡ OOP Pillars
+
+| Principle | Description |
+|------------|--------------|
+| **Encapsulation** | Hiding data via access modifiers |
+| **Abstraction** | Exposing only essential details |
+| **Inheritance** | Reuse code using `:` |
+| **Polymorphism** | Same method, different behavior (`override`, `virtual`) |
+
+---
+
+## 🧠 Advanced Concepts
+
+| Concept | Summary |
+|----------|----------|
+| **ref / out / in** | Parameter passing modifiers |
+| **Extension Methods** | Add methods to existing classes |
+| **Delegates** | Type-safe function pointer |
+| **Events** | Notification mechanism using delegates |
+| **LINQ** | Query collections easily |
+| **Async/Await** | Simplifies async programming |
+| **Task** | Represents async operation |
+| **Thread** | Unit of execution |
+| **DI (Dependency Injection)** | Loose coupling via inversion of control |
+| **GC (Garbage Collection)** | Automatic memory management |
+| **IDisposable / using** | Clean resource release |
+
+---
+
+## 🧩 C# 9+ Features
+
+| Feature | Description |
+|----------|-------------|
+| **Records** | Immutable reference types for data models |
+| **Pattern Matching** | Simplified conditional expressions |
+| **Init-only Setters** | Immutable properties |
+| **Top-level Statements** | No need for `Main()` boilerplate |
+| **Value Tuples** | `(int a, int b)` for lightweight data return |
+
+---
+
+## 🔍 Keywords to Remember
+
+| Keyword | Purpose |
+|----------|----------|
+| `sealed` | Prevent inheritance |
+| `abstract` | Define incomplete class |
+| `override` | Redefine base class method |
+| `virtual` | Allow overriding |
+| `static` | Belongs to class, not instance |
+| `readonly` | Assignable only once |
+| `partial` | Split class across files |
+
+---
+
+## 🧰 Common Exceptions
+
+| Exception | Description |
+|------------|--------------|
+| `NullReferenceException` | Accessing null object |
+| `InvalidCastException` | Wrong type conversion |
+| `IndexOutOfRangeException` | Invalid array index |
+| `DivideByZeroException` | Division by zero |
+| `FormatException` | Invalid data format |
+
+---
+
+## ⚙️ Memory & Performance
+
+| Concept | Description |
+|----------|-------------|
+| **Stack** | Stores value types, method calls |
+| **Heap** | Stores reference types |
+| **GC** | Frees unused objects automatically |
+| **Dispose()** | Manual cleanup for unmanaged resources |
+
+---
+
+## 🧾 Quick Syntax Reference
+
+```csharp
+// Class
+class Student {
+    public string Name { get; set; }
+    public void Display() => Console.WriteLine(Name);
+}
+
+// Struct
+struct Point { public int X, Y; }
+
+// Enum
+enum Role { Admin, User, Guest }
+
+// Interface
+interface IAnimal { void Speak(); }
+
+// Lambda
+Func<int, int> square = x => x * x;
+
+// Async Example
+async Task<int> FetchData() => await Task.FromResult(42);
+
