@@ -282,3 +282,30 @@ int y = (int)obj; // unboxing
 ```
 ### 🔑 Key Takeaway:
 Casting helps interoperability; use `as` or `is` for safe conversions.
+
+
+
+2️⃣ Structure of a C# Program
+
+💡 Concept:
+A C# program is structured into namespaces, classes, and methods. The entry point is the Main() method.
+
+🧠 Main Question: What are namespaces, classes, and methods?
+
+✅ Answer:
+
+Namespace: Groups related classes together.
+
+Class: Blueprint that defines properties and methods.
+
+Method: A block of code that performs a specific task.
+
+🔁 Cross Questions
+
+Q1: Why do we use Main() method?
+👉 It’s the entry point where execution starts.
+
+Q2: Can a C# program have multiple Main() methods?
+👉 Yes, but only one will act as the entry point — defined during compilation.
+
+⚙️ Example
