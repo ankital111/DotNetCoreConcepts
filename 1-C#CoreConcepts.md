@@ -69,3 +69,28 @@ namespace DemoApp
 }
 
 
+3️⃣ Data Types
+
+💡 Concept:
+C# has two main types: Value Types (stack) and Reference Types (heap).
+
+🧠 Main Question:
+
+What are value and reference types?
+
+✅ Answer:
+
+Value Types: Hold data directly (e.g., int, float, struct).
+
+Reference Types: Store a reference (e.g., class, array, string).
+
+📘 Cross Questions:
+
+Q1: What happens when you assign one struct to another?
+👉 A copy is created — changes in one do not affect the other.
+
+Q2: Difference between int and Int32?
+👉 Both are same; int is an alias for System.Int32.
+
+⚙️ Example:
+
