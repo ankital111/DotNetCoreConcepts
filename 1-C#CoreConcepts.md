@@ -31,36 +31,7 @@ Console.WriteLine("Hello, C#!");
 
 C# is Microsoft’s flagship language for modern, secure, cross-platform development.
 
-2️⃣ Structure of a C# Program
 
-💡 Concept:
-A C# program is structured into namespaces, classes, and methods. The entry point is the Main() method.
-
-🧠 Main Question: What are namespaces, classes, and methods?
-
-✅ Answer:
-
-Namespace: Groups related classes together.
-
-Class: Blueprint that defines properties and methods.
-
-Method: A block of code that performs a specific task.
-
-🔁 Cross Questions
-
-Q1: Why do we use Main() method?
-👉 It’s the entry point where execution starts.
-
-Q2: Can a C# program have multiple Main() methods?
-👉 Yes, but only one will act as the entry point — defined during compilation.
-
-⚙️ Example
----
-# 💡 C# Basics Visual Q&A (Part 1 – Complete Edition)
-
-This section covers **fundamental topics of C#** with simple explanations, examples, and cross questions — perfect for interview prep and concept clarity.
-
----
 
 ## 2️⃣ Structure of a C# Program
 
