@@ -1,3 +1,6 @@
+
+🧩 1. C# Basics
+
 | **Concept**                         | **Description**                                             | **Example**                         | **Cross Questions**                        |
 | ----------------------------------- | ----------------------------------------------------------- | ----------------------------------- | ------------------------------------------ |
 | CLR (Common Language Runtime)       | Executes .NET programs, handles memory & garbage collection | –                                   | What does CLR do?                          |
